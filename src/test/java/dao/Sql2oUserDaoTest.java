@@ -42,6 +42,13 @@ public class Sql2oUserDaoTest {
         assertNotEquals(0,testUser.getId());
     }
 
+    @Test
+    public void addedUsersReturnedFormGetAll() {
+        User testUser = setUpUser();
+        userDao.add(testUser);
+        assertEquals(1,userDao.getAll().size());
+    }
+
     //helpers
     public User setUpUser(){
         return new User("loki","male","HR","Assign job",1);
