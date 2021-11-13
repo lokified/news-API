@@ -12,6 +12,7 @@ public interface DepartmentDao {
 
     //read
     List<Department> getAll();
+    List<User> getDepartmentUsers(Department department);
     Department findById (int id);
 
     //update

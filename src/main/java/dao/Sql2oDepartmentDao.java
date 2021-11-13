@@ -1,6 +1,7 @@
 package dao;
 
 import models.Department;
+import models.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -33,6 +34,15 @@ public class Sql2oDepartmentDao {
             String sql = "SELECT * FROM departments";
          return conn.createQuery(sql)
                     .executeAndFetch(Department.class);
+        }
+    }
+
+    public List<User> getDepartmentUsers(Department department) {
+        try (Connection conn = sql2o.open()){
+            String sql = "SELECT FROM users WHERE departmentId = :id";
+            return conn.createQuery(sql)
+                    .addParameter("id",department.getId())
+                    .executeAndFetch(User.class);
         }
     }
 
