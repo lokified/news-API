@@ -10,8 +10,6 @@ public interface UserDao {
     //create
     public void add(User user);
 
-    public void addUserToDepartment(User user, Department department);
-
     //read
     List<User> getAll();
     List<Department> getDepartmentForAUser(int departmentId);

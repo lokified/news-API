@@ -49,6 +49,27 @@ public class Sql2oUserDaoTest {
         assertEquals(1,userDao.getAll().size());
     }
 
+    @Test
+    public void findByIdReturnsCorrectRestaurant() throws Exception {
+        User testUser = setUpUser();
+        userDao.add(testUser);
+        User otherUser = new User("sinko","female","sanity","washing",2);
+        assertEquals(testUser, userDao.findById(testUser.getId()));
+    }
+
+    @Test
+    public void getDepartmentForAUser() {
+        User testUser = setUpUser();
+        userDao.add(testUser);
+        User otherUser = new User("sinko","female","sanity","washing",1);
+        userDao.add(otherUser);
+        User foundUser = userDao.findById(testUser.getId());
+        User anotherUser = userDao.findById(otherUser.getId());
+        assertEquals(userDao.getAll().get(0),userDao.getDepartmentForAUser(foundUser.getDepartmentId()).get(0));
+        assertEquals(userDao.getAll().get(1),userDao.getDepartmentForAUser(anotherUser.getDepartmentId()).get(1));
+        assertEquals(2,userDao.getAll().size());
+    }
+
     //helpers
     public User setUpUser(){
         return new User("loki","male","HR","Assign job",1);
