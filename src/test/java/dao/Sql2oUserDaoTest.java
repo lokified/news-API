@@ -61,13 +61,16 @@ public class Sql2oUserDaoTest {
     public void getDepartmentForAUser() {
         User testUser = setUpUser();
         userDao.add(testUser);
-        User otherUser = new User("sinko","female","sanity","washing",1);
+        User user = new User("alo","male","checks","security",2);
+        userDao.add(user);
+        User otherUser = new User("sinko","female","sanity","washing",2);
         userDao.add(otherUser);
         User foundUser = userDao.findById(testUser.getId());
+        User firstUser = userDao.findById(user.getId());
         User anotherUser = userDao.findById(otherUser.getId());
-        assertEquals(userDao.getAll().get(0),userDao.getDepartmentForAUser(foundUser.getDepartmentId()).get(0));
-        assertEquals(userDao.getAll().get(1),userDao.getDepartmentForAUser(anotherUser.getDepartmentId()).get(1));
-        assertEquals(2,userDao.getAll().size());
+        assertEquals(foundUser,userDao.getDepartmentForAUser(foundUser.getDepartmentId()).get(0));
+        assertEquals(firstUser,userDao.getDepartmentForAUser(firstUser.getDepartmentId()).get(0));
+        assertEquals(anotherUser,userDao.getDepartmentForAUser(anotherUser.getDepartmentId()).get(1));
     }
 
     @Test

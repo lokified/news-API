@@ -1,6 +1,7 @@
 package dao;
 
 import models.Department;
+import models.User;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,12 +15,14 @@ public class Sql2oDepartmentDaoTest {
 
     private static Connection conn;
     private static Sql2oDepartmentDao departmentDao;
+    private static Sql2oUserDao userDao;
 
     @BeforeClass
     public static void setUp() {
         String connectionString ="jdbc:postgresql://localhost:5432/mynews_test";
         Sql2o sql2o = new Sql2o(connectionString,"moringa","dammey5");
         departmentDao = new Sql2oDepartmentDao(sql2o);
+        userDao = new Sql2oUserDao(sql2o);
         conn = sql2o.open();
     }
 
@@ -49,6 +52,18 @@ public class Sql2oDepartmentDaoTest {
         Department otherDepartment = new Department("Kitchen dpt","deals with food");
         departmentDao.add(otherDepartment);
         assertEquals(2,departmentDao.getAll().size());
+    }
+
+    @Test
+    public void findById_returnsCorrectDepartment() {
+        Department testDepartment = setUpDepartment();
+        departmentDao.add(testDepartment);
+        Department otherDepartment = new Department("Kitchen dpt","deals with food");
+        departmentDao.add(otherDepartment);
+        Department foundDepartment = departmentDao.findById(testDepartment.getId());
+        Department foundAnotherDepartment = departmentDao.findById(otherDepartment.getId());
+        assertEquals("Human Resource",foundDepartment.getName());
+        assertEquals("Kitchen dpt",foundAnotherDepartment.getName());
     }
 
     @Test

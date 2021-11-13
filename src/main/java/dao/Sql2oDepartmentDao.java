@@ -37,12 +37,12 @@ public class Sql2oDepartmentDao {
         }
     }
 
-    public List<User> getDepartmentUsers(Department department) {
-        try (Connection conn = sql2o.open()){
-            String sql = "SELECT FROM users WHERE departmentId = :id";
-            return conn.createQuery(sql)
-                    .addParameter("id",department.getId())
-                    .executeAndFetch(User.class);
+
+    public Department findById(int id) {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM departments WHERE id = :id")
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Department.class);
         }
     }
 
