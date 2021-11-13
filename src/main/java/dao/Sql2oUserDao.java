@@ -54,6 +54,32 @@ public class Sql2oUserDao {
         }
     }
 
+
+
+    public void update(String name, String gender, String positions,String role,int departmentId) {
+        String sql = "UPDATE users SET (name,gender,positions,role,departmentId) = (:name, :gender, :positions, :role, :departmentId)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("name", name)
+                    .addParameter("gender", gender)
+                    .addParameter("positions", positions)
+                    .addParameter("role", role)
+                    .addParameter("departmentId",departmentId)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void deleteById(int id) {
+        String sql = "DELETE from users WHERE id = :id";
+        try(Connection conn = sql2o.open()) {
+            conn.createQuery(sql)
+                    .addParameter("id",id)
+                    .executeUpdate();
+        }
+    }
+
     public void clearAll() {
         String sql = "DELETE from users";
         try (Connection conn = sql2o.open()) {

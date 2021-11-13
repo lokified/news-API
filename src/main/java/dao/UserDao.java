@@ -16,7 +16,7 @@ public interface UserDao {
     User findById (int id);
 
     //update
-    void update(int id, String name, String gender, String positions,int departmentId);
+    void update(int id, String name, String gender, String positions, String role,int departmentId);
 
     //delete
     void deleteById(int id);

@@ -70,6 +70,36 @@ public class Sql2oUserDaoTest {
         assertEquals(2,userDao.getAll().size());
     }
 
+    @Test
+    public void update_changesCorrectly() {
+        String initialName = "Loki";
+        User testUser = setUpUser();
+        userDao.add(testUser);
+        userDao.update("songiyam","male","Kitchen head","main cook",1);
+        User updatedUser = userDao.findById(testUser.getId());
+        assertNotEquals(initialName,updatedUser.getName());
+    }
+
+    @Test
+    public void deleteById_deletesCorrectly() {
+        User testUser = setUpUser();
+        userDao.add(testUser);
+        User otherUser = new User("songiyam","male","Kitchen head","main cook",1);
+        userDao.add(otherUser);
+        userDao.deleteById(testUser.getId());
+        assertEquals(1,userDao.getAll().size());
+    }
+
+    @Test
+    public void clearAll_deletesAllUsersCorrectly() {
+        User testUser = setUpUser();
+        userDao.add(testUser);
+        User otherUser = new User("songiyam","male","Kitchen head","main cook",1);
+        userDao.add(otherUser);
+        userDao.clearAll();
+        assertEquals(0,userDao.getAll().size());
+    }
+
     //helpers
     public User setUpUser(){
         return new User("loki","male","HR","Assign job",1);
