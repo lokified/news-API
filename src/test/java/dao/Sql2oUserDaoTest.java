@@ -78,7 +78,7 @@ public class Sql2oUserDaoTest {
         String initialName = "Loki";
         User testUser = setUpUser();
         userDao.add(testUser);
-        userDao.update("songiyam","male","Kitchen head","main cook",1);
+        userDao.update(testUser.getId(),"songiyam","male","Kitchen head","main cook",1);
         User updatedUser = userDao.findById(testUser.getId());
         assertNotEquals(initialName,updatedUser.getName());
     }

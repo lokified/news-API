@@ -46,6 +46,30 @@ public class Sql2oDepartmentDao {
         }
     }
 
+    public void update(int id, String name, String description) {
+        String sql = "UPDATE departments SET (name, description) = (:name, :description) WHERE id=:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("name", name)
+                    .addParameter("description", description)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void deleteById(int id) {
+        String sql = "DELETE from departments WHERE id = :id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+    }
+
     public void clearAll() {
         String sql = "DELETE from departments";
         try (Connection conn = sql2o.open()) {

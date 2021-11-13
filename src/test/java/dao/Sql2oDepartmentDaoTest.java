@@ -67,6 +67,26 @@ public class Sql2oDepartmentDaoTest {
     }
 
     @Test
+    public void update_updatesNameDescriptionCorrectly() {
+        String initialName = "Human Resource";
+        Department testDepartment = setUpDepartment();
+        departmentDao.add(testDepartment);
+        departmentDao.update(testDepartment.getId(),"Security","protects all people");
+        Department updatedDepartment = departmentDao.findById(testDepartment.getId());
+        assertNotEquals(initialName,updatedDepartment.getName());
+    }
+
+    @Test
+    public void deleteById_deletesCorrectly() {
+        Department testDepartment = setUpDepartment();
+        departmentDao.add(testDepartment);
+        Department otherDepartment = new Department("Kitchen dpt","deals with food");
+        departmentDao.add(otherDepartment);
+        departmentDao.deleteById(testDepartment.getId());
+        assertEquals(1,departmentDao.getAll().size());
+    }
+
+    @Test
     public void clearAll_clearsAllDepartments() {
         Department testDepartment = setUpDepartment();
         departmentDao.add(testDepartment);
