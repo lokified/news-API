@@ -8,7 +8,7 @@ import org.sql2o.Sql2oException;
 
 import java.util.List;
 
-public class Sql2oUserDao {
+public class Sql2oUserDao implements UserDao {
 
     private final Sql2o sql2o;
 
@@ -16,6 +16,7 @@ public class Sql2oUserDao {
         this.sql2o = sql2o;
     }
 
+    @Override
     public void add(User user) {
         String sql = "INSERT INTO users (name,gender,positions,role,departmentId) VALUES (:name, :gender, :positions, :role, :departmentId)";
         try (Connection conn = sql2o.open()){
@@ -29,6 +30,7 @@ public class Sql2oUserDao {
         }
     }
 
+    @Override
     public List<User> getAll(){
         try(Connection conn = sql2o.open()) {
             String sql = "SELECT * FROM users";
@@ -38,6 +40,7 @@ public class Sql2oUserDao {
 
     }
 
+    @Override
     public List<User> getDepartmentForAUser(int departmentId) {
         try(Connection conn = sql2o.open()) {
             return conn.createQuery("SELECT * FROM users WHERE departmentId = :departmentId")
@@ -46,6 +49,7 @@ public class Sql2oUserDao {
         }
     }
 
+    @Override
     public User findById(int id) {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT * FROM users WHERE id = :id")
@@ -54,8 +58,7 @@ public class Sql2oUserDao {
         }
     }
 
-
-
+    @Override
     public void update(String name, String gender, String positions,String role,int departmentId) {
         String sql = "UPDATE users SET (name,gender,positions,role,departmentId) = (:name, :gender, :positions, :role, :departmentId)";
         try (Connection con = sql2o.open()) {
@@ -71,6 +74,7 @@ public class Sql2oUserDao {
         }
     }
 
+    @Override
     public void deleteById(int id) {
         String sql = "DELETE from users WHERE id = :id";
         try(Connection conn = sql2o.open()) {
@@ -80,6 +84,7 @@ public class Sql2oUserDao {
         }
     }
 
+    @Override
     public void clearAll() {
         String sql = "DELETE from users";
         try (Connection conn = sql2o.open()) {

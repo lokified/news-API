@@ -12,11 +12,11 @@ public interface UserDao {
 
     //read
     List<User> getAll();
-    List<Department> getDepartmentForAUser(int departmentId);
+    List<User> getDepartmentForAUser(int departmentId);
     User findById (int id);
 
     //update
-    void update(int id, String name, String gender, String positions, String role,int departmentId);
+    void update( String name, String gender, String positions, String role,int departmentId);
 
     //delete
     void deleteById(int id);
