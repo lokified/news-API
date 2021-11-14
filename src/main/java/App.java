@@ -31,6 +31,28 @@ public class App{
             return gson.toJson(user);
         });
 
+
+        //get users
+        get("/users","application/json",(req,res) ->{
+            if(userDao.getAll().size() > 0) {
+                return gson.toJson(userDao.getAll());
+            }
+            else {
+                return "no users in the database";
+            }
+        });
+
+        //find individual users
+        get("/users/:id","application/json",(req,res) ->{
+            int userId = Integer.parseInt(req.params("id"));
+            User foundUser = userDao.findById(userId);
+
+            if(foundUser == null) {
+                throw new  APIException(404,String.format("No user wih the id: %s exists",req.params("id")));
+            }
+            return gson.toJson(foundUser);
+        });
+
         exception(APIException.class, (exception, req, res) -> {
             APIException err = (APIException) exception;
             Map<String, Object> jsonMap = new HashMap<>();
