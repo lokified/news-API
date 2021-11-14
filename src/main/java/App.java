@@ -8,6 +8,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
@@ -62,6 +63,17 @@ public class App{
                 throw new  APIException(404,String.format("No user wih the id: %s exists",req.params("id")));
             }
             return gson.toJson(foundUser);
+        });
+
+        //show users of a department
+        get("/users/:id/department","application/json",(req,res)-> {
+            int userId = Integer.parseInt(req.params("id"));
+            List<User> userDepartment = userDao.getDepartmentForAUser(userId);
+
+            if(userDepartment == null) {
+                throw new  APIException(404,String.format("No user wih the id: %s exists",req.params("id")));
+            }
+            return gson.toJson(userDepartment);
         });
 
         //get all departments
