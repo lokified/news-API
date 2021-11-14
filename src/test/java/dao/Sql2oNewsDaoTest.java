@@ -1,5 +1,6 @@
 package dao;
 
+import models.Department;
 import models.News;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -14,12 +15,14 @@ public class Sql2oNewsDaoTest {
 
     private static Connection conn;
     private static Sql2oNewsDao newsDao;
+    private static Sql2oDepartmentDao departmentDao;
 
     @BeforeClass
     public static void setUp() {
         String connectionString ="jdbc:postgresql://localhost:5432/mynews_test";
         Sql2o sql2o = new Sql2o(connectionString,"moringa","dammey5");
         newsDao = new Sql2oNewsDao(sql2o);
+        departmentDao = new Sql2oDepartmentDao(sql2o);
         conn = sql2o.open();
     }
 
@@ -94,10 +97,24 @@ public class Sql2oNewsDaoTest {
         assertEquals(0,newsDao.getAll().size());
     }
 
+    @Test
+    public void addNewsToDepartment_AddsNewsCorrectly() {
+        Department testDepartment = setUpDepartment();
+        departmentDao.add(testDepartment);
 
+        News testNews = setUpNews();
+        newsDao.add(testNews);
+
+        newsDao.addNewsToDepartment(testNews,testDepartment);
+        assertEquals(1,newsDao.getAllDepartmentsForNews(testNews.getId()).size());
+    }
 
     //helpers
     public News setUpNews() {
         return new News("Renaming","Our department will be renamed");
+    }
+
+    public Department setUpDepartment() {
+        return new Department("Human Resource","caters for employees needs");
     }
 }

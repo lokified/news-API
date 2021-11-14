@@ -1,6 +1,7 @@
 package dao;
 
 import models.Department;
+import models.News;
 import models.User;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,6 +10,8 @@ import org.junit.Test;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class Sql2oDepartmentDaoTest {
@@ -16,6 +19,7 @@ public class Sql2oDepartmentDaoTest {
     private static Connection conn;
     private static Sql2oDepartmentDao departmentDao;
     private static Sql2oUserDao userDao;
+    private static Sql2oNewsDao newsDao;
 
     @BeforeClass
     public static void setUp() {
@@ -23,6 +27,7 @@ public class Sql2oDepartmentDaoTest {
         Sql2o sql2o = new Sql2o(connectionString,"moringa","dammey5");
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
+        newsDao = new Sql2oNewsDao(sql2o);
         conn = sql2o.open();
     }
 
@@ -96,8 +101,26 @@ public class Sql2oDepartmentDaoTest {
         assertEquals(0,departmentDao.getAll().size());
     }
 
+    @Test
+    public void DepartmentsReturnsNewsCorrectly() throws Exception {
+        News testNews = setUpNews();
+        newsDao.add(testNews);
+
+
+        Department testDepartment = setUpDepartment();
+        departmentDao.add(testDepartment);
+        newsDao.addNewsToDepartment(testNews,testDepartment);
+
+        News[] news = {testNews};
+
+        assertEquals(Arrays.asList(news), departmentDao.getAllNewsForADepartment(testDepartment.getId()));
+    }
+
     //helpers
     public Department setUpDepartment() {
         return new Department("Human Resource","caters for employees needs");
+    }
+    public News setUpNews() {
+        return new News("Renaming","Our department will be renamed");
     }
 }

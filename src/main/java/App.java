@@ -55,6 +55,41 @@ public class App{
             return gson.toJson(news);
         });
 
+        //posts news to a department
+        post("/departments/:departmentId/news/:newsId","application/json",(req,res)->{
+            int departmentId = Integer.parseInt(req.params("departmentId"));
+            int newsId = Integer.parseInt(req.params("newsId"));
+
+            Department department = departmentDao.findById(departmentId);
+            News news = newsDao.findById(newsId);
+
+            if (department != null && news != null) {
+                newsDao.addNewsToDepartment(news,department);
+
+                res.status(201);
+                return gson.toJson(String.format("Department '%s' and News '%s' have been associated",news.getTitle(), department.getName()));
+            }else {
+                throw new APIException(404, String.format("Department or News does not exist"));
+            }
+
+
+        });
+
+        //show departments news
+        get("/departments/:id/news", "application/json", (req, res) -> {
+            int departmentId = Integer.parseInt(req.params("id"));
+            Department departmentToFind = departmentDao.findById(departmentId);
+            if (departmentToFind == null){
+                throw new APIException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
+            }
+            else if (departmentDao.getAllNewsForADepartment(departmentId).size() == 0){
+                return "{\"message\":\"I'm sorry, but no news are listed for this department.\"}";
+            }
+            else {
+                return gson.toJson(departmentDao.getAllNewsForADepartment(departmentId));
+            }
+        });
+
         //get users
         get("/users","application/json",(req,res) ->{
             if(userDao.getAll().size() > 0) {
