@@ -63,6 +63,28 @@ public class Sql2oNewsDaoTest {
     }
 
     @Test
+    public void update_updatesNewsCorrectly() {
+        String initialTitle = "Renaming";
+        News testNews = setUpNews();
+        newsDao.add(testNews);
+        newsDao.update(testNews.getId(),"Holiday","Holiday will start next week");
+        News updatedNews = newsDao.findById(testNews.getId());
+        assertNotEquals(initialTitle,updatedNews.getTitle());
+
+
+    }
+
+    @Test
+    public void deleteById_deletesNewsFromDatabase() {
+        News testNews = setUpNews();
+        newsDao.add(testNews);
+        News anotherNews = new News("Holiday","Holiday will start next week");
+        newsDao.add(anotherNews);
+        newsDao.deleteById(testNews.getId());
+        assertEquals(1,newsDao.getAll().size());
+    }
+
+    @Test
     public void clearAll_deletesAllNewsInDatabase() {
         News testNews = setUpNews();
         newsDao.add(testNews);

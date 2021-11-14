@@ -42,7 +42,28 @@ public class Sql2oNewsDao {
              return conn.createQuery(sql)
                      .addParameter("id",id)
                      .executeAndFetchFirst(News.class);
+        }
+    }
 
+    public void update(int id,String title, String content) {
+        try (Connection conn = sql2o.open()){
+           String sql = "UPDATE news SET (title,content) = (:title,:content) WHERE id = :id";
+           conn.createQuery(sql)
+                   .addParameter("title", title)
+                   .addParameter("content", content)
+                   .addParameter("id", id)
+                   .executeUpdate();
+        }
+    }
+
+    public void deleteById(int id) {
+        try (Connection conn = sql2o.open()){
+            String sql = "DELETE FROM news WHERE id = :id";
+             conn.createQuery(sql)
+                    .addParameter("id",id)
+                    .executeUpdate();
+        }catch (Sql2oException ex) {
+            System.out.println(ex);
         }
     }
 
