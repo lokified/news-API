@@ -70,8 +70,8 @@ public class App{
             int userId = Integer.parseInt(req.params("id"));
             List<User> userDepartment = userDao.getDepartmentForAUser(userId);
 
-            if(userDepartment == null) {
-                throw new  APIException(404,String.format("No user wih the id: %s exists",req.params("id")));
+            if(userDepartment.size() == 0) {
+                throw new  APIException(404,"no departments found");
             }
             return gson.toJson(userDepartment);
         });
