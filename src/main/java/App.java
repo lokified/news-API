@@ -1,8 +1,10 @@
 import Exceptions.APIException;
 import com.google.gson.Gson;
 import dao.Sql2oDepartmentDao;
+import dao.Sql2oNewsDao;
 import dao.Sql2oUserDao;
 import models.Department;
+import models.News;
 import models.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -23,6 +25,7 @@ public class App{
         Sql2o sql2o = new Sql2o(connectionString,"moringa","dammey5");
         Sql2oUserDao userDao = new Sql2oUserDao(sql2o);
         Sql2oDepartmentDao departmentDao = new Sql2oDepartmentDao(sql2o);
+        Sql2oNewsDao newsDao = new Sql2oNewsDao(sql2o);
         Connection conn = sql2o.open();
         Gson gson = new Gson();
 
@@ -43,6 +46,14 @@ public class App{
             return gson.toJson(department);
         });
 
+        //create news
+        post("/news/new","application/json",(req,res)->{
+            News news = gson.fromJson(req.body(), News.class);
+            newsDao.add(news);
+            res.status(201);
+            res.type("application/json");
+            return gson.toJson(news);
+        });
 
         //get users
         get("/users","application/json",(req,res) ->{
@@ -97,6 +108,27 @@ public class App{
             }
 
             return gson.toJson(departmentToFind);
+        });
+
+        //show all news
+        get("/news","application/json",(req,res) ->{
+            if(newsDao.getAll().size() > 0) {
+                return gson.toJson(newsDao.getAll());
+            }
+            else {
+                return "no news in the database";
+            }
+        });
+
+        //show individual news
+        get("/news/:id","application/json",(req,res) ->{
+            int newsId = Integer.parseInt(req.params("id"));
+            News foundNews = newsDao.findById(newsId);
+
+            if(foundNews == null) {
+                throw new  APIException(404,String.format("No news wih the id: %s exists",req.params("id")));
+            }
+            return gson.toJson(foundNews);
         });
 
         //FILTERS
