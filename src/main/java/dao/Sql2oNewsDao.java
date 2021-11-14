@@ -7,7 +7,7 @@ import org.sql2o.Sql2oException;
 
 import java.util.List;
 
-public class Sql2oNewsDao {
+public class Sql2oNewsDao implements NewsDao {
 
     private final Sql2o sql2o;
 
@@ -15,6 +15,7 @@ public class Sql2oNewsDao {
         this.sql2o = sql2o;
     }
 
+    @Override
     public void add(News news) {
         String sql = "INSERT INTO news (title,content) VALUES (:title, :content)";
         try (Connection conn = sql2o.open()) {
@@ -28,6 +29,7 @@ public class Sql2oNewsDao {
         }
     }
 
+    @Override
     public List<News> getAll(){
         try (Connection conn = sql2o.open()){
           String sql = "SELECT * FROM news";
@@ -36,6 +38,7 @@ public class Sql2oNewsDao {
         }
     }
 
+    @Override
     public News findById(int id) {
          try (Connection conn = sql2o.open()){
           String sql = "SELECT * FROM news WHERE id = :id";
@@ -45,6 +48,7 @@ public class Sql2oNewsDao {
         }
     }
 
+    @Override
     public void update(int id,String title, String content) {
         try (Connection conn = sql2o.open()){
            String sql = "UPDATE news SET (title,content) = (:title,:content) WHERE id = :id";
@@ -56,6 +60,7 @@ public class Sql2oNewsDao {
         }
     }
 
+    @Override
     public void deleteById(int id) {
         try (Connection conn = sql2o.open()){
             String sql = "DELETE FROM news WHERE id = :id";
@@ -67,6 +72,7 @@ public class Sql2oNewsDao {
         }
     }
 
+    @Override
     public void clearAll() {
         String sql = "DELETE from news";
         try (Connection conn = sql2o.open()) {
