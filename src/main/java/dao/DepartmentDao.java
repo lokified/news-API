@@ -17,7 +17,7 @@ public interface DepartmentDao {
     Department findById (int id);
 
     //update
-    void update(int id, String name,String description);
+    void update(int id, String name,String description, int employees);
 
     //delete
     void deleteById(int id);

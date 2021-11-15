@@ -8,10 +8,12 @@ public class Department{
     private int id;
     private String name;
     private String description;
+    private int employees;
 
-    public Department(String name, String description) {
+    public Department(String name, String description, int employees) {
         this.name = name;
         this.description = description;
+        this.employees = employees;
     }
 
     public int getId() {
@@ -36,6 +38,14 @@ public class Department{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(int employees) {
+        this.employees = employees;
     }
 
     @Override

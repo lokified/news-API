@@ -54,7 +54,7 @@ public class Sql2oDepartmentDaoTest {
     public void getAll_returnsAllDepartments() {
         Department testDepartment = setUpDepartment();
         departmentDao.add(testDepartment);
-        Department otherDepartment = new Department("Kitchen dpt","deals with food");
+        Department otherDepartment = new Department("Kitchen dpt","deals with food",20);
         departmentDao.add(otherDepartment);
         assertEquals(2,departmentDao.getAll().size());
     }
@@ -63,7 +63,7 @@ public class Sql2oDepartmentDaoTest {
     public void findById_returnsCorrectDepartment() {
         Department testDepartment = setUpDepartment();
         departmentDao.add(testDepartment);
-        Department otherDepartment = new Department("Kitchen dpt","deals with food");
+        Department otherDepartment = new Department("Kitchen dpt","deals with food",20);
         departmentDao.add(otherDepartment);
         Department foundDepartment = departmentDao.findById(testDepartment.getId());
         Department foundAnotherDepartment = departmentDao.findById(otherDepartment.getId());
@@ -76,7 +76,7 @@ public class Sql2oDepartmentDaoTest {
         String initialName = "Human Resource";
         Department testDepartment = setUpDepartment();
         departmentDao.add(testDepartment);
-        departmentDao.update(testDepartment.getId(),"Security","protects all people");
+        departmentDao.update(testDepartment.getId(),"Security","protects all people",20);
         Department updatedDepartment = departmentDao.findById(testDepartment.getId());
         assertNotEquals(initialName,updatedDepartment.getName());
     }
@@ -85,7 +85,7 @@ public class Sql2oDepartmentDaoTest {
     public void deleteById_deletesCorrectly() {
         Department testDepartment = setUpDepartment();
         departmentDao.add(testDepartment);
-        Department otherDepartment = new Department("Kitchen dpt","deals with food");
+        Department otherDepartment = new Department("Kitchen dpt","deals with food",20);
         departmentDao.add(otherDepartment);
         departmentDao.deleteById(testDepartment.getId());
         assertEquals(1,departmentDao.getAll().size());
@@ -95,7 +95,7 @@ public class Sql2oDepartmentDaoTest {
     public void clearAll_clearsAllDepartments() {
         Department testDepartment = setUpDepartment();
         departmentDao.add(testDepartment);
-        Department otherDepartment = new Department("Kitchen dpt","deals with food");
+        Department otherDepartment = new Department("Kitchen dpt","deals with food",20);
         departmentDao.add(otherDepartment);
         departmentDao.clearAll();
         assertEquals(0,departmentDao.getAll().size());
@@ -118,7 +118,7 @@ public class Sql2oDepartmentDaoTest {
 
     //helpers
     public Department setUpDepartment() {
-        return new Department("Human Resource","caters for employees needs");
+        return new Department("Human Resource","caters for employees needs",15);
     }
     public News setUpNews() {
         return new News("Renaming","Our department will be renamed");

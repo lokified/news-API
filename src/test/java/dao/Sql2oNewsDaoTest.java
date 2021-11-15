@@ -115,6 +115,6 @@ public class Sql2oNewsDaoTest {
     }
 
     public Department setUpDepartment() {
-        return new Department("Human Resource","caters for employees needs");
+        return new Department("Human Resource","caters for employees needs",15);
     }
 }
