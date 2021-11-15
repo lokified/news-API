@@ -67,7 +67,7 @@ public class App{
                 newsDao.addNewsToDepartment(news,department);
 
                 res.status(201);
-                return gson.toJson(String.format("Department '%s' and News '%s' have been associated",news.getTitle(), department.getName()));
+                return gson.toJson(String.format("News has been added to department  : %s",department.getName()));
             }else {
                 throw new APIException(404, String.format("Department or News does not exist"));
             }
