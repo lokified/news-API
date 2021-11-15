@@ -66,8 +66,12 @@ public class Sql2oNewsDao implements NewsDao {
     public void deleteById(int id) {
         try (Connection conn = sql2o.open()){
             String sql = "DELETE FROM news WHERE id = :id";
-             conn.createQuery(sql)
+            String joinDelete = "DELETE from departments_news WHERE newsId = :newsId";
+            conn.createQuery(sql)
                     .addParameter("id",id)
+                    .executeUpdate();
+            conn.createQuery(joinDelete)
+                    .addParameter("newsId",id)
                     .executeUpdate();
         }catch (Sql2oException ex) {
             System.out.println(ex);
