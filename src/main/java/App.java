@@ -166,6 +166,39 @@ public class App{
             return gson.toJson(foundNews);
         });
 
+        // deletes news
+        delete("news/:id/delete","application/json",(req,res) -> {
+            int newsId = Integer.parseInt(req.params("id"));
+            News foundNews = newsDao.findById(newsId);
+            if(foundNews == null) {
+                throw new  APIException(404,String.format("No news wih the id: %s exists",req.params("id")));
+            }
+            newsDao.deleteById(newsId);
+            return gson.toJson("successfully deleted");
+        });
+
+        //deletes department
+        delete("departments/:id/delete","application/json",(req,res) -> {
+            int departmentId = Integer.parseInt(req.params("id"));
+            Department foundDepartment = departmentDao.findById(departmentId);
+            if(foundDepartment == null) {
+                throw new  APIException(404,String.format("No news wih the id: %s exists",req.params("id")));
+            }
+            departmentDao.deleteById(departmentId);
+            return gson.toJson("successfully deleted");
+        });
+
+        //deletes users
+        delete("users/:id/delete","application/json",(req,res) -> {
+            int userId = Integer.parseInt(req.params("id"));
+            User foundUser = userDao.findById(userId);
+            if(foundUser == null) {
+                throw new  APIException(404,String.format("No news wih the id: %s exists",req.params("id")));
+            }
+            userDao.deleteById(userId);
+            return gson.toJson("successfully deleted");
+        });
+
         //FILTERS
         exception(APIException.class, (exception, req, res) -> {
             APIException err = (APIException) exception;
